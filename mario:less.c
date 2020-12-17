@@ -1,3 +1,5 @@
+//C program to create a right-aligned pyramid of blocks similar to those seen in Nintendo’s Super Mario Brothers Mario, where Mario must ascend the pyramid.
+
 #include <stdio.h>
 #include <cs50.h>
 

@@ -22,6 +22,7 @@ int main(int argc, string argv[])
         int k = atoi(argv[1]); // Converts string to integer if all characters are digits
         string p = get_string("plaintext: "); // Asks user for the text to encrypt
         printf("ciphertext: ");
+        
         for (int j = 0; j < strlen(p); j++)
         {
             if (islower(p[j]))

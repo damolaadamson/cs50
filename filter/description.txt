@@ -1,0 +1,2 @@
+helpers.c is my C program that applies filters to BMPs. The other files were provided to me. 
+The available filters grayscale, sepia, reflect, and blur.

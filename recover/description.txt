@@ -1,0 +1,2 @@
+recover.c is my C program that recovers JPEGs from a forensic image (card.raw).
+card.raw was provided to me

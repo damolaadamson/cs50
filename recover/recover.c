@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+
+#define BLOCKSIZE 512
 
 int main(int argc, char *argv[])
 {
@@ -17,44 +20,30 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    unsigned char *buffer = malloc(512); //Allocates buffer memory and stores the address
-    int counter = 0; //
-    FILE *output_pointer; //Holds the contents of a file
-    char output[8]; //Declaration of output file name
+    uint8_t buffer[BLOCKSIZE];  //Allocates buffer memory and stores the address
+    int counter = 0; //Counts the number of jpeg files
+    FILE *output_pointer = NULL; //Holds the contents of a file
+    char filename[8]; //Declaration of output file name
 
-    while (fread(buffer, 512, 1, input_pointer) == 1) //Reads through every block
+    while (fread(buffer, sizeof(uint8_t), BLOCKSIZE, input_pointer)) //Reads through every block
     {
         if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0) //Checks for new JPEG signature
         {
-            if (counter > 0)
+            if (output_pointer != NULL)
             {
-                fclose(output_pointer); //Closes previous file if signature is found
+                fclose(output_pointer); //Closes previous file if  jpg signature is found
             }
 
-            sprintf(output, "%03i.jpg", counter); //Sends the formatted output name to "output"
-            output_pointer = fopen(output, "w"); //Opens new image file and stores the recovered image
-
-            if (output_pointer == NULL) // Checks if JPEG file is successfully created
-            {
-                fclose(input_pointer); //Closes file if JPEG is successfully created
-                free(buffer); //Frees alocated buffer memory
-                return 1;
-            }
-
+            sprintf(filename, "%03i.jpg", counter); //Sends the formatted output name to "output"
+            output_pointer = fopen(filename, "w"); //Opens new image file and stores the recovered image
             counter++; //Updates the number of recovered files
         }
-
-        if (counter == 0) //Skips if JPEG file is not found
-        {
-            continue;
-        }
-
-        fwrite(buffer, 512, 1, output_pointer); //Writes new image into current file
+            if (output_pointer != NULL) // Checks if JPEG file is successfully created
+            {
+                fwrite(buffer, sizeof(buffer), 1, output_pointer); //Writes new image into current file
+            }
     }
-
     fclose(input_pointer);
     fclose(output_pointer);
-    free(buffer); //Frees alocated buffer memory
-
     return 0;
 }

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
                 fclose(output_pointer); //Closes previous file if  jpg signature is found
             }
 
-            sprintf(filename, "%03i.jpg", counter); //Sends the formatted output name to "output"
+            sprintf(filename, "%03i.jpg", counter); //Sends the formatted output name to "filename"
             output_pointer = fopen(filename, "w"); //Opens new image file and stores the recovered image
             counter++; //Updates the number of recovered files
         }
